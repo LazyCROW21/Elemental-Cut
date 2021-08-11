@@ -6,17 +6,21 @@
 html, body {
     height: 100%;
 }
-/* #canvasholder{
+#canvasholder{
     background-color: black;
-    align-items: center;
-    justify-content: center;
     height: 100%;
-} */
-.is169 {
-    height: 100%;
+    width: 100%;
+    position: relative;
+}
+#gamewindow {
+    position: absolute;
+    left: 5%;
+    border: 1px solid red;
     aspect-ratio: 16/9;
+}
+/* .is169 {
+    height: 90%;
 }
 .isnot169 {
-    width: 100%;
-    aspect-ratio: 16/9;
-}
+    width: 90%;
+} */

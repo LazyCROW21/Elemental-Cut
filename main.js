@@ -1,5 +1,7 @@
-let windowHeight = window.screen.availHeight;
-let windowWidth = window.screen.availWidth;
+// let windowWidth = window.screen.availWidth;
+let windowWidth = window.innerWidth;
+// let windowHeight = window.screen.availHeight;
+let windowHeight = window.innerHeight;
 let gameWindow = document.getElementById("gamewindow");
 let gwH = gameWindow.height;
 let gwW = gameWindow.width;
@@ -11,9 +13,9 @@ let windowOK = false;
 let total_assets = 0;
 const animation_data =  {
     stance_frames: 1,
+    attack_frames: 5,
     run_frames: 6,
-    bg_main: 1,
-    bg_parallax: 0
+    bg_frames: 11
 }
 for(key in animation_data) {
     total_assets += animation_data[key];
@@ -22,6 +24,7 @@ let currently_loaded = 0;
 
 // game sprite
 let runner = null;
+let bg = null
 
 if(windowHeight > windowWidth) {
     ctx.font = "30px Comic Sans MS";
@@ -46,6 +49,21 @@ if(windowHeight > windowWidth) {
     windowOK = true;
 }
 
+var inputStatus = {
+    'f': false
+}
+
+// input listeners 
+window.addEventListener('keydown', function(e){
+    inputStatus[e.key] = true;
+    console.log(e.key);
+});
+window.addEventListener('keyup', function(e){
+    inputStatus[e.key] = false;
+    console.log(e.key);
+});
+
+
 var lastTime = 0;
 
 function startGame() {
@@ -53,35 +71,38 @@ function startGame() {
         //for the runner
         let spriteSheet = {
             'stance': playerStanceSprite,
-            'run': playerRunSprite
+            'run': playerRunSprite,
+            'attack1': playerAttack1Sprite,
         };
         runner = new Runner(gwW, gwH, spriteSheet);
+        bg = new Backgroud(gwW, gwH, bgSprite);
         gameLoop();
     }
 }
 
 function gameLoop(timeStamp) {
-    let deltaTime = timeStamp - lastTime;
+    // let deltaTime = timeStamp - lastTime;
     lastTime = timeStamp;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, gwW, gwH);
-    ctx.drawImage(bgMain, 0, 0, gwW, gwH); 
-    runner.update(deltaTime);
-    runner.draw(ctx);
+    bg.draw(ctx);
+    // runner.update(deltaTime);
+    runner.draw(ctx, inputStatus);
     requestAnimationFrame(gameLoop);
 }
 
 
-// backgroud main
-var bgMain = new Image();
-bgMain.addEventListener('load', function() {
-    currently_loaded++;
-    startGame();
-}, false);
-bgMain.src = './assets/bg/Layer_0010_1.png';
-
-
-// background parallax
+// Load backgroud animation img asset
+var bgSprite = [];
+for(let i=0; i<=10; i++) {
+    let frame = new Image();
+    frame.addEventListener('load', function() {
+        currently_loaded++;
+        startGame();
+    }, false);
+    frame.src = './assets/bg/Layer_00'+((i<10)?'0'+i:i)+'.png';
+    bgSprite.push(frame);
+}
 
 // Load Stance img asset
 var playerStanceSprite = new Image();
@@ -101,4 +122,16 @@ for(let i=1; i<=6; i++) {
     }, false);
     frame.src = './assets/run/zabuza_run_frame'+i+'.png';
     playerRunSprite.push(frame);
+}
+
+// Load Running animation img asset
+var playerAttack1Sprite = [];
+for(let i=1; i<=5; i++) {
+    let frame = new Image();
+    frame.addEventListener('load', function() {
+        currently_loaded++;
+        startGame();
+    }, false);
+    frame.src = './assets/attack1/zabuza_attack1_frame'+i+'.png';
+    playerAttack1Sprite.push(frame);
 }

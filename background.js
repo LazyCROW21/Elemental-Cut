@@ -6,7 +6,7 @@ class Backgroud {
         this.layers = spriteSheet;
         this.noOfLayers = 11;
         this.layerDetails = {width: 928, height: 693};
-        this.layerSpeed = [2.7, 2.5, 1.7, 1.2, 1.0, 0.8, 0.6, 0.2, 0.1, 0.07, 0];
+        this.layerSpeed = [2.1, 1.7, 1.5, 1.1, 0.9, 0.6, 0.4, 0.1, 0.08, 0.05, 0];
         this.layerTravelled = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.adj_W = (gH / this.layerDetails.height) * this.layerDetails.width;
         this.bound = this.windowW + this.layerDetails.width;

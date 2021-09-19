@@ -13,7 +13,8 @@ let windowOK = false;
 let total_assets = 0;
 const animation_data =  {
     stance_frames: 1,
-    attack_frames: 5,
+    physical_attack1_frames: 5,
+    fire_attack1_frames: 5,
     run_frames: 6,
     bg_frames: 11
 }
@@ -53,17 +54,16 @@ if(windowHeight > windowWidth) {
 var inputStatus = {
     mouseX: 0,
     mouseY: 0,
-    f: false
+    f: false,
+    p: false
 }
 
 // input listeners 
 window.addEventListener('keydown', function(e){
     inputStatus[e.key] = true;
-    console.log(e.key);
 });
 window.addEventListener('keyup', function(e){
     inputStatus[e.key] = false;
-    console.log(e.key);
 });
 
 (function() {
@@ -103,7 +103,10 @@ function startGame() {
         let spriteSheet = {
             'stance': playerStanceSprite,
             'run': playerRunSprite,
-            'attack1': playerAttack1Sprite,
+            'attack1': {
+                'physical': playerPhysicalAttack1Sprite,
+                'fire': playerFireAttack1Sprite,
+            }
         };
         runner = new Runner(gwW, gwH, spriteSheet);
         bg = new Backgroud(gwW, gwH, bgSprite);
@@ -157,14 +160,26 @@ for(let i=1; i<=6; i++) {
     playerRunSprite.push(frame);
 }
 
-// Load Running animation img asset
-var playerAttack1Sprite = [];
+// Load Physical Attack1 animation img asset
+var playerPhysicalAttack1Sprite = [];
 for(let i=1; i<=5; i++) {
     let frame = new Image();
     frame.addEventListener('load', function() {
         currently_loaded++;
         startGame();
     }, false);
-    frame.src = './assets/attack1/zabuza_attack1_frame'+i+'.png';
-    playerAttack1Sprite.push(frame);
+    frame.src = './assets/attack1/physical/zabuza_attack1_frame'+i+'.png';
+    playerPhysicalAttack1Sprite.push(frame);
+}
+
+// Load Physical Attack1 animation img asset
+var playerFireAttack1Sprite = [];
+for(let i=1; i<=5; i++) {
+    let frame = new Image();
+    frame.addEventListener('load', function() {
+        currently_loaded++;
+        startGame();
+    }, false);
+    frame.src = './assets/attack1/fire/fire_attack1_frame'+i+'.png';
+    playerFireAttack1Sprite.push(frame);
 }

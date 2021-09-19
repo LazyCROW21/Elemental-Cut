@@ -7,16 +7,17 @@ class Runner {
         // run animation
         this.runframe = 0;
         this.runSprites = spriteSheet['run'];
-        this.runAnimationFrameDelay = 60;
-        this.runAnimationFrameDelayCnt = 60;
+        this.runAnimationFrameDelay = 75;
+        this.runAnimationFrameDelayCnt = 75;
         this.runMaxframe = this.runSprites.length;
         
         // attack1 animation
         this.attack1frame = 0;
         this.attack1Sprites = spriteSheet['attack1'];
-        this.attack1AnimationFrameDelay = 60;
-        this.attack1AnimationFrameDelayCnt = 60;
-        this.attack1Maxframe = this.attack1Sprites.length;
+        this.attackElement = 'physical';
+        this.attack1AnimationFrameDelay = 75;
+        this.attack1AnimationFrameDelayCnt = 75;
+        this.attack1Maxframe = 5;
         // this.swordHeight = this.height * 0.8;
         // this.swordWidth = this.height * 0.05;
         this.position = {
@@ -28,8 +29,14 @@ class Runner {
     }
     draw(ctx, inputStatus) {
         ctx.fillStyle = '#0f0';
-        if(inputStatus['f'] == true) {
-            this.status = 'attack1';
+        if(this.status != 'attack1') {
+            if(inputStatus['p'] == true) {
+                this.status = 'attack1';
+                this.attackElement = 'physical';
+            } else if(inputStatus['f'] == true) {
+                this.status = 'attack1';
+                this.attackElement = 'fire';
+            }
         }
         switch(this.status) {
             case 'run':
@@ -42,7 +49,7 @@ class Runner {
                 }
                 break;
             case 'attack1':
-                ctx.drawImage(this.attack1Sprites[this.attack1frame], this.position.x, this.position.y);
+                ctx.drawImage(this.attack1Sprites[this.attackElement][this.attack1frame], this.position.x, this.position.y);
                 if(this.attack1AnimationFrameDelayCnt <= 0) {
                     this.attack1frame += 1;
                     this.attack1AnimationFrameDelayCnt = this.attack1AnimationFrameDelay;
